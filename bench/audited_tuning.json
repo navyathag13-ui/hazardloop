@@ -1,0 +1,34 @@
+{
+ "set": "tuning",
+ "labels_corrected": 5,
+ "checked": 14,
+ "photos_with_violation": 23,
+ "opencv": {
+  "tp": 10,
+  "fp": 16,
+  "fn": 13,
+  "tn": 61,
+  "precision": 0.385,
+  "recall": 0.435,
+  "f1": 0.408
+ },
+ "vision_llm": {
+  "tp": 23,
+  "fp": 9,
+  "fn": 0,
+  "tn": 68,
+  "precision": 0.719,
+  "recall": 1.0,
+  "f1": 0.836
+ },
+ "cross_check": {
+  "tp": 23,
+  "fp": 25,
+  "fn": 0,
+  "tn": 52,
+  "precision": 0.479,
+  "recall": 1.0,
+  "f1": 0.648,
+  "violations_missed": 0
+ }
+}

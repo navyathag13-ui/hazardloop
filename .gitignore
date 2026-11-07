@@ -5,3 +5,7 @@ __pycache__/
 samples/*.jpg
 samples/*.png
 !samples/.gitkeep
+bench/cache/
+data/
+bench/audit_sheets/
+bench/*.log

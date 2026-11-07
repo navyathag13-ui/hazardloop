@@ -1,0 +1,342 @@
+{
+ "rule": "A label is only overruled when a bare head (or a cap that is clearly not a hard hat) is plainly visible; anything unclear counts against the model.",
+ "method": "vision_llm",
+ "checked": [
+  {
+   "n": 1,
+   "photo": "-2963-_png_jpg.rf.7985bb4d2dddf474ac23e5f1fabfe47e.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 2,
+   "photo": "-2266-_png_jpg.rf.b249a693d8f4e04216cf4489d370228e.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "two people in casual clothes with bare heads beside a worker in a hard hat"
+  },
+  {
+   "n": 3,
+   "photo": "-1571-_png_jpg.rf.ccf919d5ea025ddc24cf0a707b331249.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 4,
+   "photo": "ppe_0773_jpg.rf.ed8884fd8ed54122374d0f2db21df642.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 5,
+   "photo": "-3566-_png_jpg.rf.4c1c264370683706c8a1ae5531e5d1cc.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "officials in white shirts with bare heads"
+  },
+  {
+   "n": 6,
+   "photo": "-1691-_png_jpg.rf.a37e95e95a9fa5bd998d5b8051672a17.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "bystanders with bare heads behind the rescue team"
+  },
+  {
+   "n": 7,
+   "photo": "-1782-_png_jpg.rf.aa8f15120c372900e981ce969dc979ec.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 8,
+   "photo": "Image21_jpg.rf.b45d1f5fd24dd10f31fc00e15c5d2eb6.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 9,
+   "photo": "-3478-_png_jpg.rf.d2626516c041bfc9f4ae18ccf068dee2.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 10,
+   "photo": "-1497-_png_jpg.rf.28c24f504612e5e4d30817e324152419.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 11,
+   "photo": "-2270-_png_jpg.rf.9b746b8661f5fd480649918626241015.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 12,
+   "photo": "004837_jpg.rf.55e89e2f31399f586de8dd5a59692cab.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 13,
+   "photo": "ppe_1004_jpg.rf.54a6b92fde518fc670c378d04c3093d2.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 14,
+   "photo": "-4210-_png_jpg.rf.e34d2319d1b81012ec87e99d8e3708e3.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "man in a white shirt with a bare head at left"
+  },
+  {
+   "n": 15,
+   "photo": "005507_jpg.rf.006214454879f71b5ab918817d9d17e6.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 16,
+   "photo": "-3140-_png_jpg.rf.19225431055219d5650e6b468f0bb71c.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "man drinking from a bottle behind the worker has a bare head"
+  },
+  {
+   "n": 17,
+   "photo": "-535-_png_jpg.rf.e3fe53551800b3cac1415cf68e02bdc0.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 18,
+   "photo": "002005_jpg.rf.04b728bec292e8ac3cdcd208a3e3b68c.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 19,
+   "photo": "000519_jpg.rf.3cd4ac5a7bf0c34fce3093a2369b0a4e.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 20,
+   "photo": "003116_jpg.rf.5e4f4216185c31f89377826fba8abed9.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "worker in a knit beanie, not a hard hat"
+  },
+  {
+   "n": 21,
+   "photo": "img_014_jpg.rf.c17477b746025a0ff3d57d396f849076.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 22,
+   "photo": "-746-_png_jpg.rf.967d39938cb4279bc5c949e7f8c0900d.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 23,
+   "photo": "-1802-_png_jpg.rf.d8568402e3fad8ab91332bc99c5c524a.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "bare-headed people in the crowd behind"
+  },
+  {
+   "n": 24,
+   "photo": "-108-_png_jpg.rf.af059e51d5e2d07f6d800c52df066542.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 25,
+   "photo": "-1454-_png_jpg.rf.eab9803e110693687f3779200d931758.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "officials with bare heads"
+  },
+  {
+   "n": 26,
+   "photo": "-4280-_png_jpg.rf.fc7c39c410c72e1e0b2f4cc1e3c66500.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 27,
+   "photo": "-1075-_png_jpg.rf.4ab40f0ada6b833f3a5b2bab80633a3c.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "several men in dark jackets with bare heads"
+  },
+  {
+   "n": 28,
+   "photo": "001252_jpg.rf.f2d5f9ca274ded3c7c415c0b6b421774.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 29,
+   "photo": "002717_jpg.rf.35b92ea8e0d7cf378d5cc1a87c5733f2.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 30,
+   "photo": "-190-_png_jpg.rf.cbc353ed300c93946e33b719c90721a8.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 31,
+   "photo": "000236_jpg.rf.5f5df35f305a3f921f6d1ff543f975fa.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "officials with bare heads (black and white photo)"
+  },
+  {
+   "n": 32,
+   "photo": "Image53_jpg.rf.017129806522de3ecbadf9d3b7b2b3b5.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 33,
+   "photo": "-4877-_png_jpg.rf.10e0974f274fa7b50610c43e31731d8e.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "two men with bare heads at left"
+  },
+  {
+   "n": 34,
+   "photo": "Image22_jpg.rf.a4d9b2bef1cad8e481db20d4a4fc106b.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "collage; two workers in baseball caps"
+  },
+  {
+   "n": 35,
+   "photo": "-895-_png_jpg.rf.c4f9c8e5bfb76b56c53224fd7307f594.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 36,
+   "photo": "-3952-_png_jpg.rf.2772b15ab07b814c0936d261f2d2265c.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 37,
+   "photo": "-1380-_png_jpg.rf.70b1dc188f54071ea23c955cb357e5b0.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "officials with bare heads"
+  },
+  {
+   "n": 38,
+   "photo": "-2841-_png_jpg.rf.4ece36969113ca6715b016c37da6d133.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 39,
+   "photo": "Nhh_img_45_jpg.rf.30dcb5f961b52d91ece77604c8000b51.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 40,
+   "photo": "-4639-_png_jpg.rf.5ca5d17df36d45fafad6ded6da65181b.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 41,
+   "photo": "004887_jpg.rf.fd568e3506026c3a2db91aa9810560f6.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 42,
+   "photo": "004675_jpg.rf.4bec58267f5b570b736bff429c68826b.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 43,
+   "photo": "-3723-_png_jpg.rf.9aca1a11a58075e972fbebd4b79b4f0a.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 44,
+   "photo": "006947_jpg.rf.ddc0a81c7a6629160addcf13a250bd9b.jpg",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "men in dark coats with bare heads"
+  },
+  {
+   "n": 45,
+   "photo": "-1039-_png_jpg.rf.4bfadd6b97d3d3659d66066df4075237.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 46,
+   "photo": "N5h_img_154_jpg.rf.41dc4031deceb8ebc59ed5836d6130ac.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 47,
+   "photo": "-172-_png_jpg.rf.9ca19f7178bac5dd33019aaf2fab2d8b.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  },
+  {
+   "n": 48,
+   "photo": "img_056_jpg.rf.2081622b8ced94459d65953b10021ded.jpg",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head, or people too small or unclear to judge"
+  }
+ ]
+}

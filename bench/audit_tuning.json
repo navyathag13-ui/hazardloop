@@ -1,0 +1,103 @@
+{
+ "rule": "A label is only overruled when a bare head (or a non-hard-hat cap) is clearly visible; anything unclear counts against the model.",
+ "checked": [
+  {
+   "photo": "Image54_jpg.rf.72451dd1be47e96008d514384e8046e5.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "collage; sewing-room staff with bare heads are not labeled"
+  },
+  {
+   "photo": "-1336-_png_jpg.rf.e7920f437c608eb43b048afc9c4e284c.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "officials in suits with bare heads beside two hard hats"
+  },
+  {
+   "photo": "-4673-_png_jpg.rf.ea253c7864f47ebefc551c38d551a3d6.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "officials on a road site with bare heads"
+  },
+  {
+   "photo": "001728_jpg.rf.5fe0b33d698d71766c9dfc7f65780437.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "two men in the background with bare heads"
+  },
+  {
+   "photo": "-4918-_png_jpg.rf.a885b7ed7f818abc279897e134273311.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "label_missed",
+   "note": "person in a green uniform wears a military cap, not a hard hat"
+  },
+  {
+   "photo": "002294_jpg.rf.0a610d93fa43b5ba4a1ab862ac572cc2.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "night scene; no clearly bare head found"
+  },
+  {
+   "photo": "004991_jpg.rf.6029e7dc3edbe76be8a4d9c636d73b0e.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "seated man wears a hood under a red hat; counted against the model"
+  },
+  {
+   "photo": "-1410-_png_jpg.rf.cae20059bfd1daf6e8a3e9060dc66395.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "rescue scene; no clearly bare head found"
+  },
+  {
+   "photo": "-735-_png_jpg.rf.9fbd8e41718c85edecbf5daad6e4c8dd.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "crowded rebar site; no clearly bare head found"
+  },
+  {
+   "photo": "001865_jpg.rf.6d05a99c3f9aac5ab4baf4f7ca87f812.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "no clearly bare head found"
+  },
+  {
+   "photo": "001137_jpg.rf.dfe99c944ba83d1dd0fc46739dd95e7c.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "background worker appears to wear a hat"
+  },
+  {
+   "photo": "-1278-_png_jpg.rf.43fcf496855f2b625900225afc875b27.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "close-up from above; unclear, counted against the model"
+  },
+  {
+   "photo": "-804-_png_jpg.rf.dfc0413713463a66bb8b7709e7753dde.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "tunnel; the one worker wears a hard hat"
+  },
+  {
+   "photo": "image_123_jpg.rf.97f3e3dfff77ad0bdf3ed26cebb847c2.jpg",
+   "method": "vision_llm",
+   "kind": "FP",
+   "verdict": "model_wrong",
+   "note": "background motorcyclist in a motorcycle helmet; not a worker, counted against the model"
+  }
+ ]
+}
