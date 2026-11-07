@@ -16,3 +16,16 @@ def test_precision_recall_f1():
 def test_no_predictions_gives_zero_not_an_error():
     s = prf([{"truth": True, "m": False}], "m")
     assert s["precision"] == 0.0 and s["recall"] == 0.0 and s["f1"] == 0.0
+
+
+def test_breakdown_counts_and_rates():
+    import pandas as pd
+    from error_analysis import breakdown
+
+    df = pd.DataFrame({
+        "photo": list("abcd"), "g": ["x", "x", "y", "y"],
+        "truth": [True, False, False, False], "vision_llm": [True, True, False, True],
+    })
+    g = breakdown(df, "g")
+    assert g.loc["x", "tp"] == 1 and g.loc["x", "fp"] == 1 and g.loc["x", "precision"] == 0.5
+    assert g.loc["y", "false_alarm_rate"] == 0.5

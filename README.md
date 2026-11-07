@@ -24,6 +24,10 @@ which approach should we use?**
 | Can the false alarms be cut? | Yes, by 18% | prompt v2 on 300 fresh photos: false alarms 45 to 37, decisions 251 to 258 right (round 2) |
 | Is the model close to a person? | About as close as the dataset labels | on 50 photos labeled by a person: model 42-43/50, dataset 43/50 (round 3) |
 | Does it work on video? | Yes, with smoothing | false alert events on safe clips 7 to 2; the violation clip alerts from second 1 (round 4) |
+| When can its flags be trusted? | When heads are big enough | smallest head 96 px or more: false-alarm rate 0.02, precision 0.97 on fresh photos (round 5) |
+
+**Go/no-go and engineering handoff:** [HANDOFF.md](HANDOFF.md) (recommendation,
+API contract, camera requirement, monitoring and post-launch validation plan).
 
 ## Round 1: OpenCV vs vision LLM
 
@@ -149,6 +153,27 @@ distant crowds, overhead views) where heads are too small to judge.
 Only one clip contains a violation, so the video numbers show the effect of
 smoothing, not a recall figure.
 
+## Round 5: where it fails (error analysis)
+
+`bench/error_analysis.py` joins every result with the dataset's head boxes in
+pandas and groups photos by crowd size and by the size of the smallest
+labeled head:
+
+| Smallest head | Photos (fresh set) | False-alarm rate, v2 | Precision, v2 | False-alarm rate, first held-out set (v1) |
+|---|---|---|---|---|
+| under 24 px | 34 | 0.23 | 0.30 | 0.41 |
+| 24-48 px | 79 | 0.24 | 0.26 | 0.21 |
+| 48-96 px | 99 | 0.14 | 0.54 | 0.20 |
+| 96 px or more | 81 | **0.02** | **0.97** | 0.07 |
+
+The same pattern shows up on both held-out sets: once heads are about 96 px or
+larger in a 640 px photo, false alarms almost disappear. Crowd size matters
+less than head size. That becomes a deployment rule in
+[HANDOFF.md](HANDOFF.md): mount cameras so heads are at least that big, and
+don't send drone or distant-crowd footage. Head size here comes from the
+labels, so it describes the footage, not something the system measures at run
+time.
+
 ## How it works
 
 ```
@@ -262,7 +287,7 @@ could be trusted.
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
-python -m pytest -q                      # 31 offline tests
+python -m pytest -q                      # 32 offline tests
 uvicorn app.main:app --reload
 curl -X POST -F "file=@photo.jpg" "http://127.0.0.1:8000/inspect"              # cross-check
 curl -X POST -F "file=@photo.jpg" "http://127.0.0.1:8000/inspect?mode=opencv"  # OpenCV only
@@ -289,6 +314,7 @@ python bench/contact_sheet.py --set heldout --method vision_llm   # sheets for t
 python bench/run_eval.py --set heldout2 --prompt v1
 python bench/run_eval.py --set heldout2 --prompt v2
 python bench/human_compare.py --prompt v2
+python bench/error_analysis.py --set heldout2 --prompt v2
 ```
 
 Video clips (Pexels, free license, 640x360 versions) go in `data/videos/`, named
