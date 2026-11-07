@@ -51,12 +51,13 @@ def prf(rows, key):
     return {"tp": tp, "fp": fp, "fn": fn, "tn": tn, "precision": round(p, 3), "recall": round(rc, 3), "f1": round(f1, 3)}
 
 
-def llm_reading(name: str, image_bytes: bytes, client, model: str) -> dict:
-    path = CACHE / f"{model}__{name}.json"
+def llm_reading(name: str, image_bytes: bytes, client, model: str, prompt: str) -> dict:
+    tag = "" if prompt == "v1" else f"{prompt}__"  # v1 replies were cached before prompts had versions
+    path = CACHE / f"{model}__{tag}{name}.json"
     if path.exists():
         return json.loads(path.read_text())
     start = time.perf_counter()
-    counts, meta = vision_llm.count_ppe(image_bytes, client=client, model=model)
+    counts, meta = vision_llm.count_ppe(image_bytes, client=client, model=model, prompt=prompt)
     out = {"counts": counts.model_dump() if counts else None, "meta": meta.model_dump(),
            "seconds": round(time.perf_counter() - start, 2)}
     CACHE.mkdir(exist_ok=True)
@@ -64,24 +65,24 @@ def llm_reading(name: str, image_bytes: bytes, client, model: str) -> dict:
     return out
 
 
-def run(set_name: str) -> dict:
+def run(set_name: str, prompt: str) -> dict:
     load_dotenv(ROOT / ".env")
     client, model = vision_llm.get_client()
     if client is None:
         sys.exit("Azure OpenAI is not configured in .env.")
     photos = json.loads((ROOT / "bench" / "sets.json").read_text())[set_name]
     with ThreadPoolExecutor(max_workers=1) as pool:  # one at a time: the Azure deployment has a low request quota
-        list(pool.map(lambda n: llm_reading(n, (RAW / n).read_bytes(), client, model), photos))
+        list(pool.map(lambda n: llm_reading(n, (RAW / n).read_bytes(), client, model, prompt), photos))
     rows = []
     for name, gold in photos.items():
         image_bytes = (RAW / name).read_bytes()
         frame = cv2.imread(str(RAW / name))
         cv_people = run_inspection(frame)
         cv_dec = decide(cv_people)
-        reading = llm_reading(name, image_bytes, client, model)
+        reading = llm_reading(name, image_bytes, client, model, prompt)
         counts = vision_llm.PPECounts(**reading["counts"]) if reading["counts"] else None
         llm_dec = decide(vision_llm.to_people(counts)) if counts else {"action": "pass", "violations": 0}
-        cc = cross_check(cv_people, counts, reading["meta"]["validated"])
+        cc = cross_check(cv_people, counts, reading["meta"]["validated"], opencv_tripwire=True)
         rows.append({
             "photo": name,
             "truth": gold["no_hardhat"] > 0,
@@ -93,6 +94,7 @@ def run(set_name: str) -> dict:
             "vision_llm": bool(counts and counts.without_hardhat > 0),
             "vision_llm_heads": (counts.with_hardhat + counts.without_hardhat + counts.unclear_heads) if counts else 0,
             "vision_llm_decision": llm_dec["action"],
+            "vision_llm_unclear": bool(counts and counts.unclear_heads),
             "cross_check": cc["action"] != "pass",
             "cross_check_decision": cc["action"],
             "cross_check_review": cc["needs_human_review"],
@@ -102,13 +104,14 @@ def run(set_name: str) -> dict:
         })
 
     n = len(rows)
-    summary = {"set": set_name, "photos": n, "photos_with_violation": sum(r["truth"] for r in rows), "model": model}
+    summary = {"set": set_name, "prompt": prompt, "photos": n, "photos_with_violation": sum(r["truth"] for r in rows), "model": model}
     for m in ("opencv", "vision_llm"):
         summary[m] = {
             **prf(rows, m),
             "decision_accuracy": f"{sum(r[m + '_decision'] == r['true_decision'] for r in rows)}/{n}",
             "head_count_mae": round(statistics.mean(abs(r[m + "_heads"] - r["true_heads"]) for r in rows), 2),
         }
+    summary["vision_llm"]["unclear_photos"] = sum(1 for r in rows if r["vision_llm_unclear"])
     reviewed = [r for r in rows if r["cross_check_review"]]
     summary["cross_check"] = {
         **prf(rows, "cross_check"),
@@ -123,10 +126,12 @@ def run(set_name: str) -> dict:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--set", choices=["tuning", "heldout"], default="tuning")
+    ap.add_argument("--set", choices=["tuning", "heldout", "heldout2"], default="tuning")
+    ap.add_argument("--prompt", choices=list(vision_llm.PROMPTS), default="v1")
     args = ap.parse_args()
-    result = run(args.set)
-    out = ROOT / "bench" / f"results_{args.set}.json"
+    result = run(args.set, args.prompt)
+    suffix = "" if args.prompt == "v1" else f"_{args.prompt}"
+    out = ROOT / "bench" / f"results_{args.set}{suffix}.json"
     out.write_text(json.dumps(result, indent=1) + "\n")
     print(json.dumps(result["summary"], indent=1))
     print("wrote", out)

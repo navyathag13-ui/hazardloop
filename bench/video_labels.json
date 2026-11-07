@@ -1,0 +1,16 @@
+{
+ "note": "Clip-level labels from checking 1 frame per second by eye. 'hard' = people too small, distant or seen from overhead to judge hard hats; those clips show what the system does with footage it shouldn't trust, not accuracy.",
+ "source": "Pexels (free Pexels license), 640x360 versions; see README for links",
+ "clips": {
+  "10810473": {"label": "compliant", "what": "workers in vests and hard hats at a rebar wall"},
+  "10810476": {"label": "compliant", "what": "close-up crew in hard hats tying rebar; heads sometimes cut off by the frame"},
+  "12098511": {"label": "compliant", "what": "workers in yellow hard hats on rebar, medium distance"},
+  "19832500": {"label": "compliant", "what": "close-up bricklayer in a yellow hard hat, others partly in frame"},
+  "5434220":  {"label": "compliant", "what": "walking behind workers in red and dark hard hats indoors"},
+  "11355903": {"label": "violation", "what": "worker in a baseball cap at a brick wall the whole clip"},
+  "11798561": {"label": "hard", "what": "distant workers on a slab, heads a few pixels wide"},
+  "13921040": {"label": "hard", "what": "distant crowd of about 25 workers pouring concrete"},
+  "14346212": {"label": "hard", "what": "overhead view of one worker in red headwear at a truck"},
+  "16393893": {"label": "hard", "what": "drone shot climbing away from a rooftop slab"}
+ }
+}

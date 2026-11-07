@@ -58,17 +58,32 @@ RESPONSE_FORMAT: dict = {
     "json_schema": {"name": "ppe_counts", "strict": True, "schema": SCHEMA},
 }
 
-SYSTEM_PROMPT = """You check worksite photos for hard-hat compliance.
+PROMPTS = {
+    # v1: first version, used for the first held-out run
+    "v1": """You check worksite photos for hard-hat compliance.
 Count every visible person's head, including small people in the background.
 A baseball cap, beanie, hood or bare head is NOT a hard hat.
 If you cannot tell whether a head has a hard hat, count it as unclear instead of guessing.
-Reply with a JSON object matching the schema."""
+Reply with a JSON object matching the schema.""",
+    # v2: tuned on the tuning set against v1's false alarms (crowded, distant,
+    # dark and collage photos where it reported a bare head that wasn't there)
+    "v2": """You check worksite photos for hard-hat compliance.
+Count a person as without_hardhat only when you can clearly see the top of their head
+and it is bare or covered by something that is not a hard hat (baseball cap, beanie, hood, hair).
+Any safety helmet counts as a hard hat, whatever its colour or shape.
+Heads that are small, distant, dark, blurred, partly hidden, seen from behind at a bad angle,
+or cut off by the frame go in unclear_heads. Do not guess.
+If the image is a collage of several photos, check each panel the same way.
+Reply with a JSON object matching the schema.""",
+}
+PROMPT_VERSION = os.environ.get("HAZARDLOOP_PROMPT", "v2")
+SYSTEM_PROMPT = PROMPTS[PROMPT_VERSION]
 
 
-def build_messages(image_bytes: bytes, mime: str = "image/jpeg") -> list[dict]:
+def build_messages(image_bytes: bytes, mime: str = "image/jpeg", prompt: str = "") -> list[dict]:
     b64 = base64.b64encode(image_bytes).decode()
     return [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": PROMPTS.get(prompt, SYSTEM_PROMPT)},
         {"role": "user", "content": [
             {"type": "text", "text": "Count the workers with and without hard hats in this photo."},
             {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{b64}"}},
@@ -118,12 +133,12 @@ def get_client():
     return AzureOpenAI(azure_endpoint=endpoint, api_key=key, api_version=version, max_retries=8), deployment
 
 
-def count_ppe(image_bytes: bytes, client=None, model: str = "") -> tuple[Optional[PPECounts], VisionMeta]:
+def count_ppe(image_bytes: bytes, client=None, model: str = "", prompt: str = "") -> tuple[Optional[PPECounts], VisionMeta]:
     if client is None:
         client, model = get_client()
     if client is None:
         return None, VisionMeta(validated=False, attempts=0, errors=["No vision model is configured."])
-    messages = build_messages(image_bytes)
+    messages = build_messages(image_bytes, prompt=prompt)
 
     def call(feedback: Optional[str]) -> str:
         msgs = list(messages)

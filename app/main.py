@@ -32,7 +32,11 @@ def health():
 
 
 @app.post("/inspect")
-async def inspect(file: UploadFile = File(...), mode: str = Query("cross_check", pattern="^(cross_check|opencv)$")):
+async def inspect(
+    file: UploadFile = File(...),
+    mode: str = Query("cross_check", pattern="^(cross_check|opencv)$"),
+    opencv_tripwire: bool = Query(False, description="Also send to review when OpenCV sees a violation the LLM doesn't"),
+):
     image_bytes = await file.read()
     frame = cv2.imdecode(np.frombuffer(image_bytes, dtype=np.uint8), cv2.IMREAD_COLOR)
     if frame is None:
@@ -45,7 +49,7 @@ async def inspect(file: UploadFile = File(...), mode: str = Query("cross_check",
     else:
         counts, meta = vision_llm.count_ppe(image_bytes)
         result["vision_llm"] = {"counts": counts.model_dump() if counts else None, "meta": meta.model_dump()}
-        result["decision"] = cross_check(people, counts, meta.validated)
+        result["decision"] = cross_check(people, counts, meta.validated, opencv_tripwire)
 
     result["s3_key"] = log_inspection(image_bytes, result)
     return result

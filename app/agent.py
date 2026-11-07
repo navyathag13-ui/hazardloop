@@ -49,18 +49,20 @@ def decide(person_results: list[dict]) -> dict:
     }
 
 
-def cross_check(cv_people: list[dict], llm_counts, llm_validated: bool) -> dict:
+def cross_check(cv_people: list[dict], llm_counts, llm_validated: bool, opencv_tripwire: bool = False) -> dict:
     """Decision from the vision LLM, cross-checked against the OpenCV stage.
 
     The LLM's counts drive the decision. A person reviews the photo (the
     action is at least "flag") when:
       - the LLM reply failed validation, so only the OpenCV result is left
       - the LLM marked heads it could not judge
-      - OpenCV sees someone without a hard hat but the LLM does not
+      - opencv_tripwire is on and OpenCV sees someone without a hard hat
+        but the LLM does not
 
-    Only that direction of disagreement goes to review: when the LLM reports
-    a violation the decision already flags or escalates it, so a second
-    opinion there adds review work without catching anything new.
+    The tripwire is off by default. On 300 held-out photos it sent 42 to
+    review, 40 of them had no violation, and it caught nothing the LLM had
+    missed (README, "The short answer"). OpenCV is still used when the LLM
+    call fails.
     """
     cv_violation = any(not p["ppe_compliant"] for p in cv_people)
     if not llm_validated or llm_counts is None:
@@ -76,7 +78,7 @@ def cross_check(cv_people: list[dict], llm_counts, llm_validated: bool) -> dict:
     reasons = []
     if llm_counts.unclear_heads:
         reasons.append(f"{llm_counts.unclear_heads} head(s) could not be judged")
-    if cv_violation and not llm_violation:
+    if opencv_tripwire and cv_violation and not llm_violation:
         reasons.append("OpenCV saw a missing hard hat that the vision model did not")
     if not reasons:
         return {**base, "needs_human_review": False, "source": "vision_llm"}

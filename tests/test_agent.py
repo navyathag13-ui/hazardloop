@@ -27,9 +27,11 @@ def test_llm_decision_drives_the_result():
     assert d["action"] == "escalate" and not d["needs_human_review"]
 
 
-def test_opencv_violation_the_llm_missed_goes_to_review():
-    d = cross_check([BAD], counts(1, 0), True)
+def test_opencv_violation_the_llm_missed_goes_to_review_only_with_tripwire():
+    d = cross_check([BAD], counts(1, 0), True, opencv_tripwire=True)
     assert d["action"] == "flag" and d["needs_human_review"]
+    d = cross_check([BAD], counts(1, 0), True)
+    assert d["action"] == "pass" and not d["needs_human_review"]
 
 
 def test_unclear_heads_go_to_review():

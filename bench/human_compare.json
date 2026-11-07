@@ -1,0 +1,11 @@
+{
+ "photos": 50,
+ "human_unclear": 0,
+ "human_vs_dataset": "43/50",
+ "human_violation_dataset_compliant": 5,
+ "human_compliant_dataset_violation": 2,
+ "model_v1_vs_human": "43/50",
+ "model_v1_vs_dataset": "46/50",
+ "model_violation_human_compliant": 4,
+ "model_compliant_human_violation": 3
+}

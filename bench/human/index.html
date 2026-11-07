@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HazardLoop labeling</title>
+<style>
+  :root { --bg:#fafafa; --fg:#1d1d1f; --muted:#6e6e73; --card:#fff; --line:#d2d2d7; --accent:#0071e3; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1c1c1e; --fg:#f5f5f7; --muted:#a1a1a6; --card:#2c2c2e; --line:#3a3a3c; --accent:#2997ff; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.45 -apple-system, system-ui, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:16px; }
+  h1 { font-size:20px; margin:4px 0 2px; }
+  .muted { color:var(--muted); font-size:14px; }
+  .bar { height:6px; background:var(--line); border-radius:3px; margin:12px 0; overflow:hidden; }
+  .bar > div { height:100%; background:var(--accent); width:0; transition:width .2s; }
+  img { width:100%; max-width:640px; aspect-ratio:1; object-fit:contain; background:#000; border-radius:10px; display:block; margin:0 auto; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  button { flex:1 1 180px; padding:12px; font-size:15px; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--fg); cursor:pointer; }
+  button.sel { border-color:var(--accent); outline:2px solid var(--accent); }
+  button.small { flex:0 0 auto; padding:8px 14px; }
+  .done { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin-top:12px; }
+  kbd { border:1px solid var(--line); border-radius:4px; padding:0 4px; font-size:12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Label 50 worksite photos</h1>
+  <p class="muted">For each photo: is anyone visible <b>not</b> wearing a hard hat? A cap, beanie, hood or bare head is not a hard hat. Look at background people too. Keys: <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd>, <kbd>&larr;</kbd> back.</p>
+  <div class="bar"><div id="prog"></div></div>
+  <p class="muted" id="count"></p>
+  <div id="stage"></div>
+</main>
+<script>
+const KEY = "hazardloop-human-labels";
+let photos = [], answers = {}, i = 0;
+try { answers = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch (e) {} };
+const CHOICES = [["violation", "1  Someone without a hard hat"], ["all_hardhat", "2  Everyone has a hard hat"], ["unclear", "3  Can't tell"]];
+
+function render() {
+  const n = Object.keys(answers).filter(k => photos.includes(k)).length;
+  document.getElementById("prog").style.width = (100 * n / photos.length) + "%";
+  document.getElementById("count").textContent = `${n} of ${photos.length} labeled`;
+  const st = document.getElementById("stage");
+  if (i >= photos.length) {
+    st.innerHTML = `<div class="done"><b>All done, thank you.</b><p class="muted">Tell Claude "labels done". Claude reads them from this page.</p>
+      <button class="small" onclick="i=0;render()">Review from the start</button></div>`;
+    return;
+  }
+  const p = photos[i];
+  st.innerHTML = `<p class="muted">Photo ${i + 1} of ${photos.length}</p>
+    <img src="../../data/raw/test/${encodeURIComponent(p)}" alt="worksite photo ${i + 1}">
+    <div class="row">${CHOICES.map(([v, t]) => `<button class="${answers[p] === v ? "sel" : ""}" onclick="pick('${v}')">${t}</button>`).join("")}</div>
+    <div class="row"><button class="small" onclick="go(-1)" ${i === 0 ? "disabled" : ""}>&larr; Back</button></div>`;
+}
+function pick(v) { answers[photos[i]] = v; save(); i++; render(); }
+function go(d) { i = Math.max(0, Math.min(photos.length, i + d)); render(); }
+document.addEventListener("keydown", e => {
+  if (e.key === "1" || e.key === "2" || e.key === "3") pick(CHOICES[+e.key - 1][0]);
+  if (e.key === "ArrowLeft") go(-1);
+});
+window.getLabels = () => answers;
+fetch("photos.json").then(r => r.json()).then(list => {
+  photos = list;
+  i = photos.findIndex(p => !(p in answers)); if (i < 0) i = photos.length;
+  render();
+});
+</script>
+</body>
+</html>

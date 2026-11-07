@@ -6,7 +6,8 @@ no-hardhat. Download it to data/raw/test (see README), then run this once.
 
 Two disjoint sets are drawn with a fixed seed:
   tuning   100 photos  the only photos looked at while changing thresholds or prompts
-  heldout  300 photos  scored once at the end
+  heldout  300 photos  scored once at the end (prompt v1)
+  heldout2 300 photos  drawn after the prompt was revised, scored once with v1 and v2
 
 Each photo's label is the number of heads with and without a hard hat, and the
 decision the agent rules give for those true counts (pass, flag or escalate).
@@ -26,7 +27,7 @@ from app.agent import decide  # noqa: E402
 
 RAW = ROOT / "data" / "raw" / "test"
 SEED = 7
-SIZES = {"tuning": 100, "heldout": 300}
+SIZES = {"tuning": 100, "heldout": 300, "heldout2": 300}  # heldout2 added later; earlier sets unchanged
 
 
 def label_photos() -> dict:
